@@ -1,0 +1,17 @@
+arquivoASerAlterado = Arquivo.encontrar_por_id(arrOfArquives, idxArquivoComMenor)
+
+linhas = arquivoASerAlterado.readlines()
+
+proxLinha = linhas[Arquivo.avancarPointer(arquivoASerAlterado)]
+
+arrOfLines[idxArquivoComMenor] = proxLinha
+
+# Substituir def avancarPointer()
+def avancarPointer(arrOfArquives, arquivo_id):
+arquivo = encontrar_por_id(arrOfArquives, arquivo_id)
+arquivo.ultimaLinhaAnalisada += 1
+
+# Substituir for j in range(len(arrOfLines)
+while arrOfLines
+
+# Talvez substituir arrOfLines por linhasCandidatasAMerge
