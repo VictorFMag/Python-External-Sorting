@@ -121,3 +121,6 @@ def merge_files(arquivos_por_merge):
         for file in files_to_merge:
             file.close()
     print(contadorArquivos,"arquivos criados")
+
+    print("Tamanho do minor_files:",contar_arquivos_em_pasta("file_parts/minor_files"))
+    print("Tamanho do medium_files:",contar_arquivos_em_pasta("file_parts/medium_files"))
