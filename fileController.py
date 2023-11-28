@@ -33,7 +33,7 @@ def limpaPasta(caminho_pasta):
 
 import heapsort as hs
 
-def divide_arquivo(nome_arquivo, linhas_por_arquivo):
+def divide_files(nome_arquivo, linhas_por_arquivo):
     if contar_arquivos_em_pasta("file_parts/minor_files") == 0:
         
         with open(nome_arquivo, 'r') as arquivo_origem:
@@ -45,7 +45,7 @@ def divide_arquivo(nome_arquivo, linhas_por_arquivo):
                 if not os.path.exists(caminho_subpasta):
                     os.makedirs(caminho_subpasta)
                     print("Pasta minor_files criada com sucesso!")
-                nome_parte = os.path.join(caminho_subpasta, f'parte_{indice_arquivo}.txt') # Cria os arquivos dentro da pasta
+                nome_parte = os.path.join(caminho_subpasta, f'minor_part_{indice_arquivo}.txt') # Cria os arquivos dentro da pasta
                 
                 with open(nome_parte, 'w') as parte_arquivo:
                     contador_linhas = 0
@@ -64,12 +64,13 @@ def divide_arquivo(nome_arquivo, linhas_por_arquivo):
     
     else:
         limpaPasta('file_parts/minor_files')
-        divide_arquivo(nome_arquivo, linhas_por_arquivo)
+        divide_files(nome_arquivo, linhas_por_arquivo)
 
 #=======================================================================================================================
 
 def merge_files(arquivos_por_merge):
-    contadorArquivos =0
+    contadorArquivos = 0
+    
     caminho_subpasta = os.path.join('file_parts', 'medium_files')
     if not os.path.exists(caminho_subpasta):
         os.makedirs(caminho_subpasta)
@@ -87,11 +88,11 @@ def merge_files(arquivos_por_merge):
         files_to_merge = []
         for j in range(arquivos_por_merge):
             file_number = i + j
-            file_path = f'file_parts/minor_files/parte_{file_number}.txt'
+            file_path = f'file_parts/minor_files/minor_part_{file_number}.txt'
             if os.path.exists(file_path):
                 files_to_merge.append(open(file_path, 'r'))
 
-        output_file_path = os.path.join(caminho_subpasta, f'parte_media_{i}.txt')
+        output_file_path = os.path.join(caminho_subpasta, f'medium_part_{i}_to_{i+arquivos_por_merge-1}.txt')
 
         contadorArquivos+=1
 
