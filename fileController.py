@@ -76,7 +76,9 @@ def divide_files(nome_arquivo, linhas_por_arquivo):
 #=======================================================================================================================
 
 def merge_files(arquivos_por_merge):
-    contadorArquivos =0
+    contadorArquivos = 0
+    contadorDeIteracoes = 0
+
     caminho_subpasta = os.path.join('file_parts', 'medium_files')
     criaPasta(caminho_subpasta)
 
@@ -94,7 +96,7 @@ def merge_files(arquivos_por_merge):
             if os.path.exists(file_path):
                 files_to_merge.append(open(file_path, 'r'))
 
-        output_file_path = os.path.join(caminho_subpasta, f'medium_part_{i}.txt')
+        output_file_path = os.path.join(caminho_subpasta, f'mergedFiles_iteration{contadorDeIteracoes}_part_{i}to{i+arquivos_por_merge-1}.txt')
 
         contadorArquivos+=1
 
@@ -127,3 +129,4 @@ def merge_files(arquivos_por_merge):
 
     print("Tamanho do minor_files:",contar_arquivos_em_pasta("file_parts/minor_files"))
     print("Tamanho do medium_files:",contar_arquivos_em_pasta("file_parts/medium_files"))
+    contadorDeIteracoes+=1
