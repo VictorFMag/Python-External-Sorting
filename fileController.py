@@ -79,37 +79,50 @@ def merge_files(arquivos_por_merge):
     #
 
     for i in range(0, contar_arquivos_em_pasta('file_parts/minor_parts')+1, 5):
-        arrOfLines = []
-        arrOfArquives = []
+        linhasCandidatasAMerge = []
+        arquivosAnalisados = []
         for j in range(arquivos_por_merge):
             with open(f'file_parts/minor_files/parte_{j}.txt', 'r') as file:
                 linhas = file.readlines()
-                arrOfLines.append(linhas[0])
-                novoArquivo = Arquivo(0, j)
-                arrOfArquives.append(novoArquivo)
+                linhasCandidatasAMerge.append(linhas[0])
+                novoArquivo = Arquivo(j, 0, f'parte_{j}.txt')
+                print(novoArquivo)
+                arquivosAnalisados.append(novoArquivo) # Array que armazena os N arquivos que estão sendo analisados atualmente
 
         cont = 0
         nome_arquivo_medio = os.path.join(caminho_subpasta, f'parte_media_{cont}.txt') # Cria os arquivos dentro da pasta
         with open(nome_arquivo_medio, 'w') as arquivo_medio:
-            for j in range(len(arrOfLines)):
-                menor = min(arrOfLines)
+            while(linhasCandidatasAMerge):
+                menor = min(linhasCandidatasAMerge)
                 arquivo_medio.write(menor)
-                idxArquivoComMenor = arrOfLines.index(menor)
-                
-                linha = Arquivo.avancarPointer(Arquivo.encontrar_por_id(arrOfArquives, idxArquivoComMenor))
-                #arrOfLines[idxArquivoComMenor] = 
+                idxArquivoQueContemOMenorNumero = linhasCandidatasAMerge.index(menor)
+                linhasCandidatasAMerge.remove(menor)
+                linhasCandidatasAMerge.append(substituiLinhaRemovida(arquivosAnalisados, idxArquivoQueContemOMenorNumero))
         cont+=1
 
+def substituiLinhaRemovida(arquivosAnalisados, idxArquivoQueContemOMenorNumero, linhasCandidatasAMerge):
+    arquivoASerAlterado = arquivosAnalisados[idxArquivoQueContemOMenorNumero]
+    print("Arquivo a ser alterado:", arquivoASerAlterado.get_nome())
+
+    with open(arquivoASerAlterado.get_nome(), 'r') as file:
+        linhas = file.readlines()
+        proxLinha = linhas[arquivoASerAlterado.get_ultima_linha_analisada() + 1]
+        linhasCandidatasAMerge[idxArquivoQueContemOMenorNumero] = proxLinha
+
 class Arquivo:
-    def __init__(self, arquivo_id, ultima_linha_analisada):
+    def __init__(self, arquivo_id, ultima_linha_analisada, nome):
         self.id = arquivo_id
-        self.ultimaLinhaAnalisada = ultima_linha_analisada
+        self.ultima_linha_analisada = ultima_linha_analisada
+        self.nome = nome
     
-    def encontrar_por_id(arrOfArquives, arquivo_id):
-        for arquivo in arrOfArquives:
-            if arquivo.id == arquivo_id:
-                return arquivo
-        return None  # Retorna None se não encontrar o arquivo com o ID especificado
+    def get_id(self):
+        return self.id
+
+    def get_ultima_linha_analisada(self):
+        return self.ultima_linha_analisada
+
+    def get_nome(self):
+        return self.nome
     
-    def avancarPointer(arquivo_id):
-        arquivo_id.ultimaLinhaAnalisada += 1
+    def avancarPointer(self):
+        self.get_ultima_linha_analisada() +1
