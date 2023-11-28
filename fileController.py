@@ -80,6 +80,7 @@ def merge_files(arquivos_por_merge):
 
     cont = 0
     for i in range(0, contar_arquivos_em_pasta('file_parts/minor_files')-10, 10):
+        print("Faixa analisada:",i,"até",i+9)
         with open(f'file_parts/minor_files/parte_{i}.txt', 'r') as file0:
             with open(f'file_parts/minor_files/parte_{i+1}.txt', 'r') as file1:
                 with open(f'file_parts/minor_files/parte_{i+2}.txt', 'r') as file2:
@@ -234,3 +235,4 @@ def merge_files(arquivos_por_merge):
                                                             case _:
                                                                 "Erro: linha não existe!"
                                                 cont+=1
+        print("===========================================================================================================================")
