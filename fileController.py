@@ -39,7 +39,7 @@ def criaPasta(caminho_pasta):
 
 import heapsort as hs
 
-def divide_files(nome_arquivo, linhas_por_arquivo):
+def divide_files(nome_arquivo, linhas_por_arquivo): # Divide o arquivo a ser ordenado em partes menores de acordo com a quantidade de linhas por arquivo definida em main.py
     if contar_arquivos_em_pasta("file_parts/minor_files") == 0:
         
         with open(nome_arquivo, 'r') as arquivo_origem:
@@ -49,8 +49,7 @@ def divide_files(nome_arquivo, linhas_por_arquivo):
             while linha:
                 caminho_subpasta = os.path.join('file_parts', 'minor_files')
                 if not os.path.exists(caminho_subpasta):
-                    os.makedirs(caminho_subpasta)
-                    print("Pasta minor_files criada com sucesso!") # Não usei criaPasta() porque não quero que ela seja limpa caso já exista
+                    os.makedirs(caminho_subpasta) # Não usei criaPasta() porque não quero que ela seja limpa caso já exista
                 nome_parte = os.path.join(caminho_subpasta, f'part_{indice_arquivo}.txt')
                 
                 with open(nome_parte, 'w') as parte_arquivo:
@@ -66,6 +65,8 @@ def divide_files(nome_arquivo, linhas_por_arquivo):
                     parte_arquivo.write("".join(menorArr))
 
                 indice_arquivo += 1
+        
+        # Debugging
         print(f'{indice_arquivo} partes criadas.')
     
     else:
@@ -85,9 +86,11 @@ def merge_files(arquivos_por_merge, contadorDeIteracoes, pasta_anterior):
         caminho_subpasta = os.path.join('file_parts', f'medium_files_{contadorDeIteracoes}')
         criaPasta(caminho_subpasta)
 
-        # Iterar sobre os arquivos ordenados em grupos de 'arquivos_por_merge'
+        # Itera sobre os arquivos ordenados em lotes de 'arquivos_por_merge'
         for i in range(0, num_arquivos_pasta_anterior, arquivos_por_merge):
-            print("\nFaixa analisada:", i, "até", i + arquivos_por_merge - 1)
+
+            # Debugging
+            print("Faixa analisada:", i, "até", i + arquivos_por_merge - 1)
 
             # Lista para armazenar os arquivos a serem mesclados nesta iteração
             files_to_merge = []
@@ -104,33 +107,37 @@ def merge_files(arquivos_por_merge, contadorDeIteracoes, pasta_anterior):
             with open(output_file_path, 'w') as output_file:
                 merged_lines = []
 
-                # Ler a primeira linha de cada arquivo e armazenar em uma lista
+                # Lê a primeira linha de cada arquivo e armazenar em uma lista
                 for file in files_to_merge:
                     line = file.readline()
                     if line:
                         merged_lines.append((line, file))
 
                 while merged_lines:
-                    # Encontrar a menor linha entre as linhas lidas dos arquivos
+                    # Encontra a menor linha entre as linhas lidas dos arquivos
                     merged_lines = qs.quick_sort(qs, merged_lines)
                     smallest_line, smallest_file = merged_lines.pop(0)
 
-                    # Escrever a menor linha no arquivo de saída
+                    # Escreve a menor linha no arquivo de saída
                     output_file.write(smallest_line)
 
-                    # Ler a próxima linha do arquivo que teve a menor linha escrita
+                    # Lê a próxima linha do arquivo que teve a menor linha escrita
                     next_line = smallest_file.readline()
                     if next_line:
                         merged_lines.append((next_line, smallest_file))
 
-            # Fechar todos os arquivos abertos
             for file in files_to_merge:
                 file.close()
-        print(contadorArquivos,"arquivos criados")
-
+        
+        # Debugging
+        print(contadorArquivos,"arquivos criados nessa faixa")
         print("Tamanho do minor_files:",contar_arquivos_em_pasta("file_parts/minor_files"))
-        print("Tamanho do medium_files:",contar_arquivos_em_pasta(f"file_parts/medium_files_{contadorDeIteracoes}"))
+        print(f"Tamanho do medium_files_{contadorDeIteracoes}:",contar_arquivos_em_pasta(f"file_parts/medium_files_{contadorDeIteracoes}"))
+        print("\n")
         pasta_anterior = f"medium_files_{contadorDeIteracoes}"
+
         contadorDeIteracoes+=1
 
         merge_files(arquivos_por_merge, contadorDeIteracoes, pasta_anterior)
+    else:
+        os.rename(f"file_parts/{pasta_anterior}/part_0.txt", f"file_parts/{pasta_anterior}/arquivoFinal_ordenado.txt")
