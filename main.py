@@ -1,9 +1,17 @@
-import fileController as FC
+import multiWayMerging as MWM
+import polyphaseMerging as PM
 
 nome_arquivo = 'ordExt_teste.txt'
-linhas_por_arquivo = 100
+
+
 arquivos_por_merge = 10
+lotes = 100
 
-FC.divide_files(nome_arquivo, linhas_por_arquivo)
+'''
+MWM.divide_files(nome_arquivo, lotes)
+MWM.merge_files(lotes, contadorDeIteracoes=0, pasta_anterior="minor_files")
+'''
 
-FC.merge_files(arquivos_por_merge, contadorDeIteracoes=0, pasta_anterior="minor_files")
+maxDeArquivos = 10
+PM.divide_files(nome_arquivo, maxDeArquivos, lotes)
+PM.merge_files(nome_arquivo, arquivos_por_merge, contadorDeIteracoes=0)
