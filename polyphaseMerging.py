@@ -3,7 +3,9 @@ import internalSortingMethods as sorter
 import random
 import os
 
-def divide_files(nome_arquivo, maxDeArquivos, lotesDeLeitura): # Divide o arquivo a ser ordenado em partes menores de acordo com a quantidade de linhas por arquivo definida em main.py
+def divide_files(nome_arquivo, lotesDeLeitura, maxDeArquivos): # Divide o arquivo a ser ordenado em partes menores de acordo com a quantidade de linhas por arquivo definida em main.py
+    AF.criaPasta("file_parts/Polyphase")
+    
     if AF.contar_arquivos_em_pasta("file_parts/Polyphase") == 0:
 
         # Criar os 10 arquivos
@@ -35,59 +37,46 @@ def divide_files(nome_arquivo, maxDeArquivos, lotesDeLeitura): # Divide o arquiv
 
 #=======================================================================================================================
 
-def merge_files(nome_arquivo, lotesDeMerge, contadorDeIteracoes):
-    num_arquivos_pasta = AF.contar_arquivos_em_pasta(f'file_parts/Polyphase')
-    
-    arquivoVazio = ""
-    for i in range(1, AF.contar_arquivos_em_pasta("file_parts/Polyphase")+1, 1):
-        with open(f"file_parts/Polyphase/part_{i}.txt", 'r') as arquivo:
-            linhas = arquivo.readlines()
-            if len(linhas)==0:
-                arquivoVazio = arquivo.name
-                print(arquivoVazio)
+def merge_files(nome_arquivo, lotesDeMerge, contadorDeIteracoes): # Isso tá funcionando, mas não da forma que eu queria
+    pasta_polyphase = 'file_parts/Polyphase'
+    num_arquivos_pasta = AF.contar_arquivos_em_pasta(pasta_polyphase)
 
-    # Itera sobre os arquivos ordenados em lotes de 'lotes'
+    # Encontra o arquivo vazio
+    arquivo_vazio = ""
+    for i in range(1, num_arquivos_pasta + 1):
+        with open(f"{pasta_polyphase}/part_{i}.txt", 'r') as arquivo:
+            if not arquivo.read():
+                arquivo_vazio = arquivo.name
+                break
+
+    # Itera sobre os lotes de arquivos a serem mesclados
     for i in range(0, num_arquivos_pasta, lotesDeMerge):
-
-        # Lista para armazenar os arquivos a serem mesclados nesta iteração
-        file_list = os.listdir("file_parts/Polyphase")
-        files_to_merge = []
-        for file in file_list:
-            files_to_merge.append(open(f'file_parts/Polyphase/{file}', 'r'))
-
-        with open(arquivoVazio, 'w') as output_file:
+        files_to_merge = [
+            open(f'{pasta_polyphase}/part_{j}.txt', 'r') for j in range(i + 1, min(i + lotesDeMerge + 1, num_arquivos_pasta + 1))
+        ]
+        
+        with open(arquivo_vazio, 'w') as output_file:
             merged_lines = []
-
-            # Lê a primeira linha de cada arquivo e armazenar em uma lista
             for file in files_to_merge:
-                for j in range(lotesDeMerge):
-                    line = file.readline()
-                    if line:
-                        merged_lines.append((line, file))
+                lines = file.readlines()
+                if lines:
+                    merged_lines.extend(lines)
 
-            while merged_lines:
-                # Encontra a menor linha entre as linhas lidas dos arquivos
-                merged_lines = sorter.quick_sort(merged_lines)
-                smallest_line, smallest_file = merged_lines.pop(0)
+            sorter.heap_sort(merged_lines)  # Ordena todas as linhas juntas
 
-                # Escreve a menor linha no arquivo de saída
-                output_file.write(smallest_line)
-
-                # Lê a próxima linha do arquivo que teve a menor linha escrita
-                next_line = smallest_file.readline()
-                if next_line:
-                    merged_lines.append((next_line, smallest_file))
+            # Escreve as linhas ordenadas no arquivo de saída
+            output_file.write("".join(merged_lines))
 
         for file in files_to_merge:
             file.close()
-        
-    contadorDeIteracoes+=1
 
-    # Tá dando errado aqui
-    with open(arquivoVazio, 'r'):
-        with open(nome_arquivo, 'r'):
-            numLinhasArquivoVazio = arquivoVazio.readlines()
-            numLinhasArquivoOriginal = nome_arquivo.readlines()
-    
-    if len(numLinhasArquivoOriginal) != len(numLinhasArquivoVazio):
+    # Verifica se a mesclagem foi concluída
+    with open(arquivo_vazio, 'r') as arquivo_vazio:
+        with open(nome_arquivo, 'r') as arquivo_original:
+            num_linhas_arquivo_vazio = arquivo_vazio.readlines()
+            num_linhas_arquivo_original = arquivo_original.readlines()
+
+    # Se a mesclagem não estiver completa, chama recursivamente merge_files
+    if len(num_linhas_arquivo_original) != len(num_linhas_arquivo_vazio):
+        contadorDeIteracoes += 1
         merge_files(nome_arquivo, lotesDeMerge, contadorDeIteracoes)
