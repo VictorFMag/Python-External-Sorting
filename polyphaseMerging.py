@@ -1,5 +1,5 @@
 import auxFunctions as AF
-import heapsort as hs
+import internalSortingMethods as sorter
 import random
 import os
 
@@ -26,7 +26,7 @@ def divide_files(nome_arquivo, maxDeArquivos, lotesDeLeitura): # Divide o arquiv
                         linha = arquivo_origem.readline()
                         contador_linhas += 1
                     
-                    hs.heap_sort(menorArr)
+                    sorter.heap_sort(menorArr)
                     parte_arquivo.write("".join(menorArr))
     
     else:
@@ -34,8 +34,6 @@ def divide_files(nome_arquivo, maxDeArquivos, lotesDeLeitura): # Divide o arquiv
         divide_files(nome_arquivo, maxDeArquivos, lotesDeLeitura)
 
 #=======================================================================================================================
-
-import quicksort as qs
 
 def merge_files(nome_arquivo, lotesDeMerge, contadorDeIteracoes):
     num_arquivos_pasta = AF.contar_arquivos_em_pasta(f'file_parts/Polyphase')
@@ -69,7 +67,7 @@ def merge_files(nome_arquivo, lotesDeMerge, contadorDeIteracoes):
 
             while merged_lines:
                 # Encontra a menor linha entre as linhas lidas dos arquivos
-                merged_lines = qs.quick_sort(qs, merged_lines)
+                merged_lines = sorter.quick_sort(merged_lines)
                 smallest_line, smallest_file = merged_lines.pop(0)
 
                 # Escreve a menor linha no arquivo de saída

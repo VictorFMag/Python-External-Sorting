@@ -1,6 +1,8 @@
 import auxFunctions as AF
 import os
-import heapsort as hs
+import internalSortingMethods as sorter
+
+#=======================================================================================================================
 
 def divide_files(nome_arquivo, linhas_por_arquivo): # Divide o arquivo a ser ordenado em partes menores de acordo com a quantidade de linhas por arquivo definida em main.py
     if AF.contar_arquivos_em_pasta("file_parts/MultiWay/minor_files") == 0:
@@ -24,7 +26,7 @@ def divide_files(nome_arquivo, linhas_por_arquivo): # Divide o arquivo a ser ord
                         linha = arquivo_origem.readline()
                         contador_linhas += 1
                     
-                    hs.heap_sort(menorArr)  # Ordena as linhas com Heap Sort, garantindo que o tempo de ordenação seja parecido para todos os tamanhos de memória
+                    sorter.heap_sort(menorArr)  # Ordena as linhas com Heap Sort, garantindo que o tempo de ordenação seja parecido para todos os tamanhos de memória
                     parte_arquivo.write("".join(menorArr))
 
                 indice_arquivo += 1
@@ -37,8 +39,6 @@ def divide_files(nome_arquivo, linhas_por_arquivo): # Divide o arquivo a ser ord
         divide_files(nome_arquivo, linhas_por_arquivo)
 
 #=======================================================================================================================
-
-import quicksort as qs
 
 def merge_files(arquivos_por_merge, contadorDeIteracoes, pasta_anterior):
     num_arquivos_pasta_anterior = AF.contar_arquivos_em_pasta(f'file_parts/MultiWay/{pasta_anterior}')
@@ -78,7 +78,7 @@ def merge_files(arquivos_por_merge, contadorDeIteracoes, pasta_anterior):
 
                 while merged_lines:
                     # Encontra a menor linha entre as linhas lidas dos arquivos
-                    merged_lines = qs.quick_sort(qs, merged_lines)
+                    merged_lines = sorter.quick_sort(merged_lines)
                     smallest_line, smallest_file = merged_lines.pop(0)
 
                     # Escreve a menor linha no arquivo de saída
@@ -93,12 +93,12 @@ def merge_files(arquivos_por_merge, contadorDeIteracoes, pasta_anterior):
                 file.close()
         
         # Debugging
+        print("")
         print(contadorArquivos,"arquivos criados nessa faixa")
         print("Tamanho do minor_files:",AF.contar_arquivos_em_pasta("file_parts/MultiWay/minor_files"))
         print(f"Tamanho do medium_files_{contadorDeIteracoes}:",AF.contar_arquivos_em_pasta(f"file_parts/MultiWay/medium_files_{contadorDeIteracoes}"))
-        print("\n")
-        pasta_anterior = f"medium_files_{contadorDeIteracoes}"
 
+        pasta_anterior = f"medium_files_{contadorDeIteracoes}"
         contadorDeIteracoes+=1
 
         merge_files(arquivos_por_merge, contadorDeIteracoes, pasta_anterior)
