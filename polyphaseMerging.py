@@ -3,7 +3,7 @@ import internalSortingMethods as sorter
 import random
 import os
 
-def divide_files(nome_arquivo, lotesDeLeitura, maxDeArquivos): # Divide o arquivo a ser ordenado em partes menores de acordo com a quantidade de linhas por arquivo definida em main.py
+def divide_files(nome_arquivo, lotesDeLeitura, maxDeArquivos): # Divide o arquivo a ser ordenado em um número fixo de partes menores, definido em main.py
     AF.criaPasta("file_parts/Polyphase")
     
     if AF.contar_arquivos_em_pasta("file_parts/Polyphase") == 0:
@@ -18,7 +18,7 @@ def divide_files(nome_arquivo, lotesDeLeitura, maxDeArquivos): # Divide o arquiv
             linha = arquivo_origem.readline()
             
             while linha:
-                indiceAleatorio = random.randint(1, maxDeArquivos-1)  # Gerar índices de 1 a 9
+                indiceAleatorio = random.randint(1, maxDeArquivos-1)  # Gerar índices aleatórios de 1 a 9
                 with open(f'file_parts/Polyphase/part_{indiceAleatorio}.txt', 'a') as parte_arquivo:
                     contador_linhas = 0
                     menorArr = []
@@ -56,7 +56,7 @@ def merge_files(lotesDeMerge, contadorDeIteracoes):
             for file in files_to_merge:
                 lines = file.readlines()  # Lê todas as linhas do arquivo
                 if lines:
-                    merged_lines.extend(lines)
+                    merged_lines.extend(lines) # O extend adiciona vários elementos ao final da lista, ao contrário do append que é só 1
 
             sorter.heap_sort(merged_lines)  # Ordena todas as linhas
             with open(f'{arquivo_vazio}', 'a') as output_file:
@@ -68,5 +68,5 @@ def merge_files(lotesDeMerge, contadorDeIteracoes):
         contadorDeIteracoes += 1
         merge_files(lotesDeMerge, contadorDeIteracoes)
     else:
-        os.rename(f"{pasta_polyphase}/part_{num_arquivos_pasta}.txt", f"{pasta_polyphase}/arquivoFinal_ordenado.txt") # Generalizar isso
+        os.rename(f"{pasta_polyphase}/part_{num_arquivos_pasta}.txt", f"{pasta_polyphase}/arquivoFinal_ordenado.txt")
         print("\nO arquivo ordenado pode ser encontrado em arquivoFinal_ordenado.txt")
