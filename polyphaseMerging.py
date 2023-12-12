@@ -37,26 +37,14 @@ def divide_files(nome_arquivo, lotesDeLeitura, maxDeArquivos): # Divide o arquiv
 
 #=======================================================================================================================
 
-import tempfile
-import shutil
-
-def merge_files(lotesDeMerge, contadorDeIteracoes): # Isso tá funcionando, mas demora 1 bilhão de anos
+def merge_files(lotesDeMerge, contadorDeIteracoes):
     pasta_polyphase = 'file_parts/Polyphase'
     num_arquivos_pasta = AF.contar_arquivos_em_pasta(pasta_polyphase)
 
-    # Encontra o arquivo vazio
-    arquivo_vazio = ""
-    for i in range(1, num_arquivos_pasta + 1):
-        with open(f"{pasta_polyphase}/part_{i}.txt", 'r') as arquivo:
-            if not arquivo.read():
-                arquivo_vazio = arquivo.name
-                break
+    arquivo_vazio = AF.encontrar_arquivo_vazio(pasta_polyphase, num_arquivos_pasta)
 
-    if arquivo_vazio!="":
-        # Itera sobre os arquivos ordenados em lotes de 'lotesDeMerge'
-        for i in range(num_arquivos_pasta):
-
-            # Lista para armazenar os arquivos a serem mesclados nesta iteração
+    if arquivo_vazio != "":
+        for i in range(0, num_arquivos_pasta, lotesDeMerge):
             files_to_merge = []
             for j in range(lotesDeMerge):
                 file_number = i + j
@@ -64,44 +52,20 @@ def merge_files(lotesDeMerge, contadorDeIteracoes): # Isso tá funcionando, mas 
                 if os.path.exists(file_path):
                     files_to_merge.append(open(file_path, 'r'))
 
-            with open(f'{arquivo_vazio}', 'w') as output_file:
-                merged_lines = []
+            merged_lines = []
+            for file in files_to_merge:
+                lines = file.readlines()  # Lê todas as linhas do arquivo
+                if lines:
+                    merged_lines.extend(lines)
 
-                # Lê a primeira linha de cada arquivo e armazenar em uma lista
-                for file in files_to_merge:
-                    print("Arquivo to merge:",file)
-                    line = file.readline()
-                    if line:
-                        merged_lines.append((line, file))
-
-                while merged_lines:
-                    # Encontra a menor linha entre as linhas lidas dos arquivos
-                    merged_lines = sorter.quick_sort(merged_lines)
-                    smallest_line, smallest_file = merged_lines.pop(0)
-
-                    # Escreve a menor linha no arquivo de saída
-                    output_file.write(smallest_line)
-
-                    # Lê a próxima linha do arquivo que teve a menor linha escrita
-                    next_line = smallest_file.readline()
-                    
-                    # Nome do arquivo original
-                    temp_file = tempfile.NamedTemporaryFile(mode='r+', delete=False)
-                    # Abre o arquivo original para leitura
-                    with open(smallest_file.name, 'r') as file:
-                        next(file)  # Pula a primeira linha
-                        shutil.copyfileobj(file, temp_file)  # Copia as linhas restantes para o arquivo temporário
-                    temp_file.close()  # Fecha o arquivo temporário
-                    # Move o conteúdo do arquivo temporário de volta para o arquivo original
-                    shutil.move(temp_file.name, smallest_file.name)
-
-                    if next_line:
-                        merged_lines.append((next_line, smallest_file))
+            sorter.heap_sort(merged_lines)  # Ordena todas as linhas
+            with open(f'{arquivo_vazio}', 'a') as output_file:
+                output_file.writelines(merged_lines)  # Escreve todas as linhas ordenadas no arquivo final
 
             for file in files_to_merge:
                 file.close()
-            
-        contadorDeIteracoes+=1
+
+        contadorDeIteracoes += 1
         merge_files(lotesDeMerge, contadorDeIteracoes)
     else:
-        os.rename(f"{pasta_polyphase}/{arquivo_vazio}", f"{pasta_polyphase}/arquivoFinal_ordenado.txt")
+        print("O arquivo ordenado pode ser encontrado em part_10.txt")
