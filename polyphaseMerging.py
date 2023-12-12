@@ -68,5 +68,5 @@ def merge_files(lotesDeMerge, contadorDeIteracoes):
         contadorDeIteracoes += 1
         merge_files(lotesDeMerge, contadorDeIteracoes)
     else:
-        os.rename(f"{pasta_polyphase}/part_10.txt", f"{pasta_polyphase}/arquivoFinal_ordenado.txt")
-        print("O arquivo ordenado pode ser encontrado em part_10.txt")
+        os.rename(f"{pasta_polyphase}/part_{num_arquivos_pasta}.txt", f"{pasta_polyphase}/arquivoFinal_ordenado.txt") # Generalizar isso
+        print("\nO arquivo ordenado pode ser encontrado em arquivoFinal_ordenado.txt")
