@@ -12,4 +12,4 @@ MWM.merge_files(lotes, contadorDeIteracoes=0, pasta_anterior="minor_files")
 '''
 
 PM.divide_files(nome_arquivo, lotes, maxDeArquivos=10)
-PM.merge_files(nome_arquivo, lotes, contadorDeIteracoes=0)
+PM.merge_files(lotes, contadorDeIteracoes=0)
