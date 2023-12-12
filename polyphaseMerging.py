@@ -62,10 +62,11 @@ def merge_files(lotesDeMerge, contadorDeIteracoes):
             with open(f'{arquivo_vazio}', 'a') as output_file:
                 output_file.writelines(merged_lines)  # Escreve todas as linhas ordenadas no arquivo final
 
-            for file in files_to_merge:
-                file.close()
+        for file in files_to_merge:
+            file.close()
 
         contadorDeIteracoes += 1
         merge_files(lotesDeMerge, contadorDeIteracoes)
     else:
+        os.rename(f"{pasta_polyphase}/part_10.txt", f"{pasta_polyphase}/arquivoFinal_ordenado.txt")
         print("O arquivo ordenado pode ser encontrado em part_10.txt")
