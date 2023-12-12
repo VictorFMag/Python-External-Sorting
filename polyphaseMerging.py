@@ -8,17 +8,17 @@ def divide_files(nome_arquivo, lotesDeLeitura, maxDeArquivos): # Divide o arquiv
     
     if AF.contar_arquivos_em_pasta("file_parts/Polyphase") == 0:
 
-        # Criar os 10 arquivos
+        # Cria os 10 arquivos
         for i in range(1, maxDeArquivos+1):
             with open(os.path.join(f'file_parts/Polyphase/part_{i}.txt'), 'w') as file:
-                if i != maxDeArquivos:  # Deixar o último arquivo vazio
+                if i != maxDeArquivos:  # Deixa o último arquivo vazio
                     file.write('')
         
         with open(nome_arquivo, 'r') as arquivo_origem:
             linha = arquivo_origem.readline()
             
             while linha:
-                indiceAleatorio = random.randint(1, maxDeArquivos-1)  # Gerar índices aleatórios de 1 a 9
+                indiceAleatorio = random.randint(1, maxDeArquivos-1)  # Gera índices aleatórios de 1 a 9
                 with open(f'file_parts/Polyphase/part_{indiceAleatorio}.txt', 'a') as parte_arquivo:
                     contador_linhas = 0
                     menorArr = []
@@ -58,7 +58,8 @@ def merge_files(lotesDeMerge, contadorDeIteracoes):
                 if lines:
                     merged_lines.extend(lines) # O extend adiciona vários elementos ao final da lista, ao contrário do append que é só 1
 
-            sorter.heap_sort(merged_lines)  # Ordena todas as linhas
+            sorter.heap_sort(merged_lines)
+
             with open(f'{arquivo_vazio}', 'a') as output_file:
                 output_file.writelines(merged_lines)  # Escreve todas as linhas ordenadas no arquivo final
 
