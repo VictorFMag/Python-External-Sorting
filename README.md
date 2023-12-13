@@ -47,5 +47,6 @@ Essa função trata da fusão (merge) das partes menores ordenadas até formar o
 2) Itera sobre os arquivos existentes em lotes definidos por lotesDeMerge e mescla esses arquivos, lendo todas as linhas e ordenando-as.<br>
 3) As linhas mescladas e ordenadas são escritas em um arquivo vazio.<br>
 4) Após mesclar os arquivos, a função verifica se ainda há algum arquivo vazio. Se sim, continua o processo de mesclagem até que não existam mais arquivos vazios, resultando no arquivo final ordenado.
+<hr>
 <h1>ordExt_teste.txt</h1>
 É o arquivo original e desorganizado a ser ordenado. Contém um número considerável de linhas, cada uma contendo um único número.
