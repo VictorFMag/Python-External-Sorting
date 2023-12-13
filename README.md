@@ -6,7 +6,7 @@ A ideia é que cada um deles seja abordado de forma isolada e com uma explicaç�
 O arquivo main.py orquestra a execução dos métodos de ordenação externa, calcula os tempos de execução e realiza uma análise comparativa entre eles, resumindo qual método pode ser mais indicado dependendo das características dos dados e do desempenho encontrado na execução.<br>
 <hr>
 <h1>auxFunction.py</h1>
-Implementa métodos que são utilizados várias vezes ao longo do código, evitando assim a reescrita desnecessária de trechos desses código.
+Implementa métodos que são utilizados várias vezes ao longo do código, evitando assim a reescrita desnecessária desses trechos de código.
 <h2>contar_arquivos_em_pasta(caminho_pasta):</h2>
 Como o nome diz, conta e retorna a quantidade de arquivos contidos em uma pasta.
 <h2>limpaPasta(caminho_pasta):</h2>
