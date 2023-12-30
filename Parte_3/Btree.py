@@ -165,30 +165,3 @@ class BTree:
             child.children.append(sibling.children.pop(0))
 
         node.keys[index] = sibling.keys.pop(0)
-
-#=================================================================================================
-# Testes de debugging - Tudo OK
-
-'''
-
-t = 1000  # Ordem da árvore B (mínimo de chaves por nó - 1)
-b_tree = BTree(t)
-file_path = './file_parts/Polyphase/arquivoFinal_ordenado.txt'  # Substitua pelo caminho correto do seu arquivo
-page_size = 4096  # Tamanho da página em bytes
-
-with open(file_path, 'r') as file:
-    linha = file.readline()
-    while linha:
-        value = float(linha.strip())  # Converte para o tipo de dado apropriado
-        b_tree.insert(value)
-        linha = file.readline()
-
-print(b_tree.search(20)) # Chave não encontrada
-print(b_tree.search(0.00010279248861089219)) # Chave encontrada
-
-print()
-
-print(b_tree.remove(0.00010279248861089219)) # Valor removido
-print(b_tree.search(0.00010279248861089219)) # Chave não encontrada
-
-'''
