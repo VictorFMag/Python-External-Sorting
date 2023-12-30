@@ -1,0 +1,7 @@
+Ambos os metodos de ordenacao externa utilizam principalmente o heapsort para ordenar os arquivos em lotes.
+
+Tempo de execucao do MultiWay Merging: 18.74756360054016 segundos.
+Tempo de execucao do Polyphase Merging: 0.9933915138244629 segundos
+
+O MultiWay Merging executou varias vezes mais lentamente que o Polyphase Merging, alem de consumir muita memoria externa extra no processo.
+Dessa forma, a conclusao e de que o Polyphase Merging e mais indicado na maior parte dos casos testados.
