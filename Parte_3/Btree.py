@@ -5,10 +5,12 @@ class Node:
         self.leaf = leaf
 
 class BTree:
+    # Define a raiz como um nó vazio e define o parâmetro "t" que é o grau mínimo da árvore
     def __init__(self, t):
         self.root = Node()
         self.t = t
 
+    # Procura por uma chave na árvore. Começa na raiz e se move para baixo na árvore conforme necessário para encontrar a chave
     def search(self, key, node=None):
         if node is None:
             node = self.root
@@ -22,6 +24,7 @@ class BTree:
         else:
             return self.search(key, node.children[i])
 
+    # Insere uma chave na árvore. Se a raiz estiver cheia, a árvore é reorganizada para acomodar a nova chave
     def insert(self, key):
         root = self.root
         if len(root.keys) == (2 * self.t) - 1:
@@ -33,6 +36,10 @@ class BTree:
         else:
             self.insert_non_full(root, key)
 
+    # ==========================================================================================================================
+    # Métodos auxiliares da inserção
+            
+    # Insere a chave em um nó que não está cheio
     def insert_non_full(self, node, key):
         i = len(node.keys) - 1
         if node.leaf:
@@ -51,6 +58,7 @@ class BTree:
                     i += 1
             self.insert_non_full(node.children[i], key)
 
+    # Divide o nó filho de um nó pai quando o filho está cheio
     def split_child(self, parent, index):
         t = self.t
         child = parent.children[index]
@@ -62,7 +70,10 @@ class BTree:
         if not child.leaf:
             new_child.children = child.children[t: 2 * t]
             child.children = child.children[0: t - 1]
-
+    
+    # ==========================================================================================================================
+            
+    # Remove uma chave da árvore e reorganiza a árvore se necessário após a remoção
     def remove(self, key):
         root = self.root
         if not root:
@@ -76,6 +87,9 @@ class BTree:
                 root = self.root
         self._remove(root, key)
         return "Valor removido"
+    
+    # ==========================================================================================================================
+    # Métodos auxiliares da remoção
 
     def _remove(self, node, key):
         i = 0
@@ -89,6 +103,7 @@ class BTree:
         elif not node.leaf:
             return self.remove_from_subtree(node, key, i)
 
+    # Remove uma chave de um nó interno
     def remove_internal_node(self, node, key, index):
         if node.leaf:
             if len(node.keys) > self.t - 1:
@@ -109,18 +124,21 @@ class BTree:
                 self.merge_children(node, index)
                 self._remove(node.children[index], key)
 
+    # Obtém o predecessor de uma chave na árvore
     def get_predecessor(self, node, index):
         current = node.children[index]
         while not current.leaf:
             current = current.children[len(current.keys)]
         return current.keys[-1]
 
+    # Obtém o sucessor de uma chave na árvore
     def get_successor(self, node, index):
         current = node.children[index + 1]
         while not current.leaf:
             current = current.children[0]
         return current.keys[0]
 
+    # Mescla dois nós filhos de um nó pai quando um deles é removido
     def merge_children(self, node, index):
         child = node.children[index]
         next_child = node.children[index + 1]
@@ -131,6 +149,7 @@ class BTree:
         del node.keys[index]
         del node.children[index + 1]
 
+    # Remove uma chave de um nó filho
     def remove_from_subtree(self, node, key, index):
         if len(node.children[index].keys) == self.t - 1:
             if index > 0 and len(node.children[index - 1].keys) >= self.t:
@@ -146,6 +165,7 @@ class BTree:
         else:
             self._remove(node.children[index], key)
 
+    # borrow_from_previous e borrow_from_next permitem a transferência de chaves entre nós vizinhos, garantindo o balanceamento da árvore
     def borrow_from_previous(self, node, index):
         child = node.children[index]
         sibling = node.children[index - 1]

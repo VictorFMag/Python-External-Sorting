@@ -41,6 +41,8 @@ print("A análise comparativa entre os métodos utilizados pode ser encontrada n
 #=================================================================================================
 # Parte 3
 
+# Etapas 1 e 2 -> implementação da árvore B + testes
+
 from Parte_3.Btree import BTree
 
 t = 1000  # Ordem da árvore B (mínimo de chaves por nó - 1)
@@ -62,3 +64,6 @@ print()
 
 print(b_tree.remove(0.00010279248861089219)) # Valor removido
 print(b_tree.search(0.00010279248861089219)) # Chave não encontrada
+
+# Etapa 3 -> Montagem particionada
+
