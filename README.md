@@ -1,5 +1,5 @@
 <h1>Sobre o README</h1>
-Esse README explicará o funcionamento dos diferentes arquivos e métodos do código.<br>
+Esse README explicará o funcionamento dos diferentes arquivos do código.<br>
 A ideia é que cada um deles seja abordado de forma isolada e com uma explicação clara e simples sobre as responsabilidades de cada um.<br>
 <hr>
 <h1>main.py</h1>
