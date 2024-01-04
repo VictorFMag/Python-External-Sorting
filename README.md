@@ -3,7 +3,8 @@ Esse README explicará o funcionamento dos diferentes arquivos e métodos do có
 A ideia é que cada um deles seja abordado de forma isolada e com uma explicação clara e simples sobre as responsabilidades de cada um.<br>
 <hr>
 <h1>main.py</h1>
-O arquivo main.py orquestra a execução dos métodos de ordenação externa, calcula os tempos de execução e realiza uma análise comparativa entre eles, resumindo qual método pode ser mais indicado dependendo das características dos dados e do desempenho encontrado na execução.<br>
+O arquivo main.py orquestra a execução dos métodos de ordenação externa, calcula os tempos de execução e realiza uma análise comparativa entre eles, resumindo qual método pode ser mais indicado dependendo das características dos dados e do desempenho encontrado na execução.<br><br>
+Além disso, define a instância e a ordem da árvore B necessária para a implementação da parte 3.<br>
 <hr>
 <h1>auxFunction.py</h1>
 Implementa métodos que são utilizados várias vezes ao longo do código, evitando assim a reescrita desnecessária desses trechos de código.
