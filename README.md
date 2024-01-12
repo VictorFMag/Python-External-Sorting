@@ -19,5 +19,4 @@ Esse arquivo é responsável por dividir um grande arquivo em um número de 'max
 É o arquivo original e desorganizado a ser ordenado. Contém um número considerável de linhas, cada uma contendo um único número.
 <hr>
 <h1>BTree.py e BPlusTree.py</h1>
-<br>
 São implementações de árvores B, contendo métodos de inserção, remoção e busca de chaves.
