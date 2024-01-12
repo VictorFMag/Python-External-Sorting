@@ -42,7 +42,7 @@ print("A análise comparativa entre os métodos utilizados pode ser encontrada n
 #=================================================================================================
 # Parte 3
 
-# Etapas 1 e 2 -> implementação da árvore B + testes
+# Implementação da árvore B
 
 from Parte_3.Btree import BTree
 
@@ -76,19 +76,17 @@ remove_key = 0.3206598979232401
 print(f"Removendo chave {remove_key} em Btree: {b_tree.remove(remove_key)}")
 print(f"Buscando por chave {remove_key} em Btree: {b_tree.search(remove_key)}\n")
 
+# Implementação com árvore B+
 
-# Etapa 3 -> Montagem particionada
-
-from Parte_3.BTreePlus import BPlusTree
+from Parte_3.BPlusTree import BPlusTree
 
 bplus_tree = BPlusTree(t)
-
-# Exemplo de uso:
+# file_path = './ordExt.txt'
+# O arquivo maior demora muito para montar, a ponto do sistema matar o processo antes de finalizar
 
 # Preenchendo a árvore com o arquivo maior
-file_path_Arquivo_Maior = './ordExt.txt'
 try:
-    with open(file_path_Arquivo_Maior, 'r') as file:
+    with open(file_path, 'r') as file:
         linha = file.readline()
         while linha:
             value = float(linha.strip())  # Converte para o tipo de dado apropriado
@@ -103,11 +101,11 @@ except Exception as e:
 
 # Testando operações na árvore B+
 search_key = 20
-print(f"Buscando por chave {search_key} em BtreePlus: {bplus_tree.search(search_key)}")
+print(f"Buscando por chave {search_key} em BPlusTree: {bplus_tree.search(search_key)}")
 
 search_key = 0.3206598979232401
-print(f"Buscando por chave {search_key} em BtreePlus: {bplus_tree.search(search_key)}")
+print(f"Buscando por chave {search_key} em BPlusTree: {bplus_tree.search(search_key)}")
 
 remove_key = 0.3206598979232401
-print(f"Removendo chave {remove_key} em BtreePlus: {bplus_tree.remove(remove_key)}")
-print(f"Buscando por chave {remove_key} em BtreePlus: {bplus_tree.search(remove_key)}\n")
+print(f"Removendo chave {remove_key} em BPlusTree: {bplus_tree.remove(remove_key)}")
+print(f"Buscando por chave {remove_key} em BPlusTree: {bplus_tree.search(remove_key)}\n")
