@@ -44,7 +44,7 @@ print("A análise comparativa entre os métodos utilizados pode ser encontrada n
 
 # Implementação da árvore B
 
-from Parte_3.Btree import BTree
+from BTrees.Btree import BTree
 
 t = 1000  # Ordem da árvore B (mínimo de chaves por nó - 1)
 b_tree = BTree(t)
@@ -78,7 +78,7 @@ print(f"Buscando por chave {remove_key} em Btree: {b_tree.search(remove_key)}\n"
 
 # Implementação com árvore B+
 
-from Parte_3.BPlusTree import BPlusTree
+from BTrees.BPlusTree import BPlusTree
 
 bplus_tree = BPlusTree(t)
 # file_path = './ordExt.txt'
