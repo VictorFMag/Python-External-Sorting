@@ -17,3 +17,6 @@ Esse arquivo é responsável por dividir um grande arquivo em um número de 'max
 <hr>
 <h1>ordExt_teste.txt</h1>
 É o arquivo original e desorganizado a ser ordenado. Contém um número considerável de linhas, cada uma contendo um único número.
+<hr>
+<h1>BTree.py e BPlusTree.py</h1>
+São implementações de árvores B, contendo métodos de inserção, remoção e busca de chaves.
