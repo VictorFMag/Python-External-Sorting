@@ -13,6 +13,7 @@ with open(os.path.join(f'analiseComparativa.txt'), 'w') as file: # Limpa o arqui
 #=================================================================================================
 # Parte 1
 
+'''
 import multiWayMerging as MWM
 
 inicio = time.time()
@@ -21,7 +22,7 @@ MWM.merge_files(lotes, contadorDeIteracoes=0, pasta_anterior="minor_files")
 fim = time.time()
 with open(os.path.join(f'analiseComparativa.txt'), 'a') as file:
     file.write(f"\n\nTempo de execucao do MultiWay Merging: {fim-inicio} segundos.\n")
-
+'''
 #=================================================================================================
 # Parte 2
 
@@ -47,23 +48,64 @@ from Parte_3.Btree import BTree
 
 t = 1000  # Ordem da árvore B (mínimo de chaves por nó - 1)
 b_tree = BTree(t)
-file_path = './file_parts/Polyphase/arquivoFinal_ordenado.txt'  # Substitua pelo caminho correto do seu arquivo
-page_size = 4096  # Tamanho da página em bytes
+file_path = './file_parts/Polyphase/arquivoFinal_ordenado.txt'
 
-with open(file_path, 'r') as file:
-    linha = file.readline()
-    while linha:
-        value = float(linha.strip())  # Converte para o tipo de dado apropriado
-        b_tree.insert(value)
+# Preenchendo a árvore com o arquivo ordenado
+try:
+    with open(file_path, 'r') as file:
         linha = file.readline()
+        while linha:
+            value = float(linha.strip())  # Converte para o tipo de dado apropriado
+            b_tree.insert(value)
+            linha = file.readline()
+except FileNotFoundError:
+    print(f"Erro: O arquivo '{file_path}' não foi encontrado.")
+    exit()
+except Exception as e:
+    print(f"Erro ao processar o arquivo: {e}")
+    exit()
 
-print(b_tree.search(20)) # Chave não encontrada
-print(b_tree.search(0.00010279248861089219)) # Chave encontrada
+# Testando operações na árvore B
+search_key = 20
+print(f"Buscando por chave {search_key} em Btree: {b_tree.search(search_key)}")
 
-print()
+search_key = 0.3206598979232401
+print(f"Buscando por chave {search_key} em Btree: {b_tree.search(search_key)}")
 
-print(b_tree.remove(0.00010279248861089219)) # Valor removido
-print(b_tree.search(0.00010279248861089219)) # Chave não encontrada
+remove_key = 0.3206598979232401
+print(f"Removendo chave {remove_key} em Btree: {b_tree.remove(remove_key)}")
+print(f"Buscando por chave {remove_key} em Btree: {b_tree.search(remove_key)}\n")
+
 
 # Etapa 3 -> Montagem particionada
 
+from Parte_3.BTreeV2 import BTreeV2
+
+b_treeV2 = BTreeV2(t, file_path, page_size=4096)
+
+# Preenchendo a árvore com o arquivo ordenado
+try:
+    with open(file_path, 'r') as file:
+        for line in file:
+            key = float(line.strip())  # Supondo que as chaves são float
+            b_treeV2.insert(key)
+except FileNotFoundError:
+    print(f"Erro: O arquivo '{file_path}' não foi encontrado.")
+    exit()
+except Exception as e:
+    print(f"Erro ao processar o arquivo: {e}")
+    exit()
+
+# Testando operações na árvore B
+
+# Buscar uma chave (irá carregar a página relevante do arquivo)
+search_key = 20
+print(f"Buscando por chave {search_key} em BtreeV2: {b_tree.search(search_key)}")
+
+# Buscar uma chave (irá carregar a página relevante do arquivo)
+search_key = 0.3206598979232401
+print(f"Buscando por chave {search_key} em BtreeV2: {b_treeV2.search(search_key)}")
+
+# Remover uma chave (irá carregar a página relevante do arquivo)
+print(f"Removendo chave {remove_key} em BtreeV2: {b_treeV2.remove(remove_key)}")
+print(f"Buscando por chave {remove_key} em BtreeV2: {b_treeV2.search(remove_key)}\n")
