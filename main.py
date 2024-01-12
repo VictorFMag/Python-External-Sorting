@@ -79,16 +79,21 @@ print(f"Buscando por chave {remove_key} em Btree: {b_tree.search(remove_key)}\n"
 
 # Etapa 3 -> Montagem particionada
 
-from Parte_3.BTreeV2 import BTreeV2
+from Parte_3.BTreePlus import BPlusTree
 
-b_treeV2 = BTreeV2(t, file_path, page_size=4096)
+bplus_tree = BPlusTree(t)
 
-# Preenchendo a árvore com o arquivo ordenado
+# Exemplo de uso:
+
+# Preenchendo a árvore com o arquivo maior
+file_path_Arquivo_Maior = './ordExt.txt'
 try:
-    with open(file_path, 'r') as file:
-        for line in file:
-            key = float(line.strip())  # Supondo que as chaves são float
-            b_treeV2.insert(key)
+    with open(file_path_Arquivo_Maior, 'r') as file:
+        linha = file.readline()
+        while linha:
+            value = float(linha.strip())  # Converte para o tipo de dado apropriado
+            bplus_tree.insert(value)
+            linha = file.readline()
 except FileNotFoundError:
     print(f"Erro: O arquivo '{file_path}' não foi encontrado.")
     exit()
@@ -96,16 +101,13 @@ except Exception as e:
     print(f"Erro ao processar o arquivo: {e}")
     exit()
 
-# Testando operações na árvore B
-
-# Buscar uma chave (irá carregar a página relevante do arquivo)
+# Testando operações na árvore B+
 search_key = 20
-print(f"Buscando por chave {search_key} em BtreeV2: {b_tree.search(search_key)}")
+print(f"Buscando por chave {search_key} em BtreePlus: {bplus_tree.search(search_key)}")
 
-# Buscar uma chave (irá carregar a página relevante do arquivo)
 search_key = 0.3206598979232401
-print(f"Buscando por chave {search_key} em BtreeV2: {b_treeV2.search(search_key)}")
+print(f"Buscando por chave {search_key} em BtreePlus: {bplus_tree.search(search_key)}")
 
-# Remover uma chave (irá carregar a página relevante do arquivo)
-print(f"Removendo chave {remove_key} em BtreeV2: {b_treeV2.remove(remove_key)}")
-print(f"Buscando por chave {remove_key} em BtreeV2: {b_treeV2.search(remove_key)}\n")
+remove_key = 0.3206598979232401
+print(f"Removendo chave {remove_key} em BtreePlus: {bplus_tree.remove(remove_key)}")
+print(f"Buscando por chave {remove_key} em BtreePlus: {bplus_tree.search(remove_key)}\n")
